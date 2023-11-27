@@ -1,22 +1,13 @@
 cmake_minimum_required(VERSION 3.5)
 
 # libnmea source dirs
-SET(LIBNMEA_DIR "libnmea")
+SET(LIBNMEA_DIR "${COMPONENT_DIR}/libnmea")
 SET(LIBNMEA_NMEA_DIR "${LIBNMEA_DIR}/src/nmea")
 SET(LIBNMEA_PARSERS_DIR "${LIBNMEA_DIR}/src/parsers")
 
-
-# List of libnmea parsers
-file(GLOB PARSERS_SRCS
-        RELATIVE "${LIBNMEA_DIR}"
-        "${LIBNMEA_DIR}/src/parsers/*.c")
-list(REMOVE_ITEM PARSERS_SRCS "${LIBNMEA_DIR}/src/parsers/parse.c")
-
-# Number of libnmea parsers
-list(LENGTH PARSERS_SRCS PARSER_CNT)
-
 # source files list
-file(GLOB SOURCES *.c)
+file(GLOB SOURCES esp_gps.c
+        nmea_parser.c)
 
 # append libnmea static srcs
 list(APPEND SOURCES "libnmea/src/nmea/nmea.c"
@@ -25,8 +16,17 @@ list(APPEND SOURCES "libnmea/src/nmea/nmea.c"
 
 # register idf component
 idf_component_register(SRCS ${SOURCES}
-        INCLUDE_DIRS ${LIBNMEA_NMEA_DIR} ${LIBNMEA_PARSERS_DIR})
+        INCLUDE_DIRS "." ${LIBNMEA_NMEA_DIR} ${LIBNMEA_PARSERS_DIR}
+        REQUIRES esp_event driver)
 
+# List of libnmea parsers
+file(GLOB PARSERS_SRCS "${LIBNMEA_DIR}/src/parsers/*.c")
+list(REMOVE_ITEM PARSERS_SRCS "${LIBNMEA_DIR}/src/parsers/parse.c")
+
+# Number of libnmea parsers
+list(LENGTH PARSERS_SRCS PARSER_CNT)
+
+#message(FATAL_ERROR "PARSERS_SRCS is: ${PARSERS_SRCS} | LEN=${PARSER_CNT}")
 
 # Add libnmea parsers to target sources
 target_sources(${COMPONENT_LIB} PRIVATE ${PARSERS_SRCS})
@@ -38,7 +38,7 @@ FOREACH (PARSER_SRC ${PARSERS_SRCS})
     string(TOUPPER ${PARSER} PARSER_UPPERCASE)
 
     # Enable the libnmea parser
-    target_compile_definitions(${COMPONENT_LIB} PRIVATE "ENABLE_${PARSER_UPPERCASE}=1")
+    target_compile_definitions(${COMPONENT_LIB} PRIVATE "-DENABLE_${PARSER_UPPERCASE}=1")
 
     # Set compiler definitions
     # See https://github.com/jacketizer/libnmea/blob/master/CMakeLists.txt#L140-L159
@@ -51,5 +51,5 @@ FOREACH (PARSER_SRC ${PARSERS_SRCS})
     set_source_files_properties(${PARSER_SRC} PROPERTIES COMPILE_DEFINITIONS "${PARSER_COMPILE_DEFS}")
 ENDFOREACH ()
 
-target_compile_definitions(${COMPONENT_LIB} PRIVATE PARSER_COUNT=${PARSER_CNT})
-target_compile_options(${COMPONENT_LIB} PRIVATE "-Wno-strict-prototypes")
+target_compile_definitions(${COMPONENT_LIB} PRIVATE -DPARSER_COUNT=${PARSER_CNT})
+target_compile_options(${COMPONENT_TARGET} PRIVATE "-Wno-strict-prototypes")

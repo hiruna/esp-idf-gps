@@ -6,3 +6,4 @@
 /examples/gps_reader/build/
 .idea
 /examples/gps_reader/main/cmake-build-debug/
+/examples/gps_reader/sdkconfig.old

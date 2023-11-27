@@ -3,3 +3,5 @@ url: https://github.com/hiruna/esp-idf-gps
 repository: https://github.com/hiruna/esp-idf-gps.git
 documentation: https://github.com/hiruna/esp-idf-gps
 issues: https://github.com/hiruna/esp-idf-gps/issues
+examples:
+  - path: ./examples
