@@ -1,0 +1,5 @@
+description: ESP-IDF component/driver for reading & parsing GPS module data via UART
+url: https://github.com/hiruna/esp-idf-gps
+repository: https://github.com/hiruna/esp-idf-gps.git
+documentation: https://github.com/hiruna/esp-idf-gps
+issues: https://github.com/hiruna/esp-idf-gps/issues

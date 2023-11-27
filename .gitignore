@@ -1,0 +1,8 @@
+/examples/gps_reader/cmake-build-debug/
+/cmake-build-debug/
+/build/
+/examples/gps_reader/dependencies.lock
+/examples/gps_reader/sdkconfig
+/examples/gps_reader/build/
+.idea
+/examples/gps_reader/main/cmake-build-debug/

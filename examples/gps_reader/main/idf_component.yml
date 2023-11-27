@@ -1,0 +1,6 @@
+## IDF Component Manager Manifest File
+version: "1.0.0"
+description: GPS Reader Example
+dependencies:
+  hiruna/esp-idf-gps:
+    override_path: '../../../'
